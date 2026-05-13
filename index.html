@@ -3,340 +3,353 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sosyal Medya Ekip Takip Paneli</title>
+    <title>NEXUS | Operasyon Yönetim Paneli</title>
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --bg-color: #f3f4f6;
-            --card-bg: #ffffff;
-            --text-main: #1f2937;
-            --text-muted: #6b7280;
-            --success: #10b981;
-            --danger: #ef4444;
-            --border: #e5e7eb;
+            --bg-dark: #0a0a0a;
+            --bg-panel: #141414;
+            --bg-hover: #1f1f1f;
+            --red-primary: #b91c1c;
+            --red-glow: rgba(185, 28, 28, 0.3);
+            --red-dark: #7f1d1d;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-color: #262626;
+            --success: #059669;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg-dark);
             color: var(--text-main);
             display: flex;
-            justify-content: center;
             min-height: 100vh;
         }
 
-        /* Giriş Ekranı */
-        #login-section {
+        /* Sol Menü (Sidebar) */
+        aside {
+            width: 320px;
+            background-color: var(--bg-panel);
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--text-main);
             display: flex;
             align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100vh;
-        }
-
-        .login-box {
-            background: var(--card-bg);
-            padding: 2.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-        }
-
-        .login-box h2 { margin-bottom: 1.5rem; color: var(--primary); }
-        .login-box input {
-            width: 100%; padding: 0.75rem; margin-bottom: 1rem;
-            border: 1px solid var(--border); border-radius: 6px;
-            font-size: 1rem;
+            gap: 10px;
         }
         
+        .brand span { color: var(--red-primary); }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.8rem;
+            border-radius: 6px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--red-primary);
+            box-shadow: 0 0 8px var(--red-glow);
+        }
+
         button {
-            width: 100%; padding: 0.75rem;
-            background-color: var(--primary); color: white;
-            border: none; border-radius: 6px; cursor: pointer;
-            font-size: 1rem; font-weight: 600; transition: 0.2s;
-        }
-        button:hover { background-color: var(--primary-hover); }
-
-        /* Dashboard Ekranı */
-        #dashboard-section {
-            display: none; /* Giriş yapana kadar gizli */
-            width: 100%; max-width: 1000px;
-            padding: 2rem;
-        }
-
-        header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--border);
+            background: linear-gradient(135deg, var(--red-primary), var(--red-dark));
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
         }
 
-        .grid-container {
-            display: grid; grid-template-columns: 1fr 2fr; gap: 1.5rem;
-        }
-        @media (max-width: 768px) {
-            .grid-container { grid-template-columns: 1fr; }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--red-glow);
         }
 
-        .card {
-            background: var(--card-bg); padding: 1.5rem;
-            border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            margin-bottom: 1.5rem;
+        .member-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
         }
 
-        .card h3 { margin-bottom: 1rem; font-size: 1.1rem; color: var(--text-main); }
+        .member-item {
+            background: var(--bg-dark);
+            padding: 0.8rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .member-item div {
+            display: flex;
+            flex-direction: column;
+        }
         
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-muted); }
-        .form-group input {
-            width: 100%; padding: 0.6rem; border: 1px solid var(--border);
-            border-radius: 6px; font-size: 0.95rem;
+        .member-name { font-weight: 600; font-size: 0.9rem; }
+        .member-handle { font-size: 0.8rem; color: var(--text-muted); }
+
+        .btn-delete {
+            background: transparent;
+            color: var(--text-muted);
+            padding: 0.3rem;
+            font-size: 0.8rem;
+            box-shadow: none;
+        }
+        .btn-delete:hover { background: var(--bg-panel); color: var(--red-primary); transform: none; box-shadow: none;}
+
+        /* Ana İçerik (Main) */
+        main {
+            flex-grow: 1;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
         }
 
-        /* Tablo Tasarımı */
-        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border); }
-        th { background-color: #f9fafb; font-weight: 600; font-size: 0.9rem; color: var(--text-muted); }
-        td { font-size: 0.95rem; }
-        
-        .status-badge {
-            padding: 0.25rem 0.5rem; border-radius: 999px; font-size: 0.8rem; font-weight: 600;
+        .header-title {
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--text-muted);
         }
-        .status-yes { background-color: #d1fae5; color: var(--success); }
-        .status-no { background-color: #fee2e2; color: var(--danger); }
-        .status-wait { background-color: #f3f4f6; color: var(--text-muted); }
 
-        .delete-btn {
-            background-color: transparent; color: var(--danger);
-            padding: 0.25rem; width: auto; font-size: 0.8rem;
+        .header-title strong { color: var(--text-main); font-weight: 600; }
+
+        .dropzone {
+            border: 2px dashed var(--border-color);
+            background: var(--bg-panel);
+            border-radius: 12px;
+            padding: 4rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
         }
-        .delete-btn:hover { background-color: #fee2e2; }
-        
-        #loading { display: none; text-align: center; color: var(--primary); margin-top: 1rem; font-weight: bold; }
+
+        .dropzone:hover, .dropzone.dragover {
+            border-color: var(--red-primary);
+            background: rgba(185, 28, 28, 0.05);
+        }
+
+        .dropzone h3 { margin-bottom: 0.5rem; font-weight: 500; }
+        .dropzone p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* Tablo */
+        .table-container {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            display: none;
+        }
+
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { 
+            background: rgba(0,0,0,0.2); 
+            padding: 1rem; 
+            font-size: 0.85rem; 
+            text-transform: uppercase; 
+            color: var(--text-muted); 
+            border-bottom: 2px solid var(--border-color);
+        }
+        td { padding: 1rem; border-bottom: 1px solid var(--border-color); font-size: 0.95rem; }
+        tr:hover td { background: var(--bg-hover); }
+
+        .status {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .status.ok { background: rgba(5, 150, 105, 0.1); color: var(--success); border: 1px solid var(--success); }
+        .status.fail { background: rgba(185, 28, 28, 0.1); color: var(--red-primary); border: 1px solid var(--red-primary); }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
     </style>
 </head>
 <body>
 
-    <div id="login-section">
-        <div class="login-box">
-            <h2>Sekreter Girişi</h2>
-            <p style="margin-bottom: 1rem; font-size: 0.85rem; color: gray;">Test için: admin / 1234</p>
-            <input type="text" id="username" placeholder="Kullanıcı Adı">
-            <input type="password" id="password" placeholder="Şifre">
-            <button onclick="login()">Giriş Yap</button>
-            <p id="login-error" style="color: red; display: none; margin-top: 1rem; font-size: 0.9rem;">Hatalı giriş!</p>
+    <aside>
+        <div class="brand">
+            NEXUS<span>.</span>PANEL
         </div>
-    </div>
 
-    <div id="dashboard-section">
-        <header>
-            <div>
-                <h1 style="color: var(--primary);">Etkileşim Takip Merkezi</h1>
-                <p style="color: var(--text-muted); font-size: 0.9rem;">Hoş geldin, Sekreter Yöneticisi</p>
-            </div>
-            <button onclick="logout()" style="width: auto; padding: 0.5rem 1rem; background-color: var(--text-muted);">Çıkış Yap</button>
-        </header>
-
-        <div class="grid-container">
-            <div>
-                <div class="card">
-                    <h3>👥 Yeni Birim Üyesi Ekle</h3>
-                    <div class="form-group">
-                        <label>Ad Soyad</label>
-                        <input type="text" id="memberName" placeholder="Örn: Ahmet Yılmaz">
-                    </div>
-                    <div class="form-group">
-                        <label>Sosyal Medya Kullanıcı Adı</label>
-                        <input type="text" id="memberHandle" placeholder="Örn: @ahmetyilmaz">
-                    </div>
-                    <button onclick="addMember()">Ekibe Ekle</button>
-                </div>
-
-                <div class="card">
-                    <h3>📋 Ekibim (<span id="teamCount">0</span> Kişi)</h3>
-                    <table id="teamTable">
-                        <thead>
-                            <tr>
-                                <th>Kullanıcı</th>
-                                <th>İşlem</th>
-                            </tr>
-                        </thead>
-                        <tbody id="teamList">
-                            </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div>
-                <div class="card">
-                    <h3>🚀 Gönderi Etkileşim Kontrolü</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-                        Takip etmek istediğiniz gönderinin URL'sini yapıştırın. Bot, ekibinizdeki üyelerin bu gönderiyle etkileşime girip girmediğini kontrol edecektir.
-                    </p>
-                    <div class="form-group">
-                        <label>Gönderi URL'si</label>
-                        <input type="text" id="postUrl" placeholder="https://twitter.com/hesap/status/123456789...">
-                    </div>
-                    <button onclick="checkInteractions()">Etkileşimleri Kontrol Et</button>
-                    <div id="loading">Bot API üzerinden verileri çekiyor, lütfen bekleyin...</div>
-                </div>
-
-                <div class="card" id="resultsCard" style="display: none;">
-                    <h3>📊 Kontrol Sonuçları</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;" id="scannedUrlText"></p>
-                    <table id="resultsTable">
-                        <thead>
-                            <tr>
-                                <th>Üye</th>
-                                <th>Beğeni</th>
-                                <th>Yorum</th>
-                                <th>Retweet (Paylaşım)</th>
-                            </tr>
-                        </thead>
-                        <tbody id="interactionList">
-                            </tbody>
-                    </table>
-                </div>
-            </div>
+        <div class="form-group" style="margin-top: 1rem;">
+            <label>Yeni Personel Adı</label>
+            <input type="text" id="pName" placeholder="Örn: Operatör 1">
         </div>
-    </div>
+        <div class="form-group">
+            <label>X (Twitter) ID</label>
+            <input type="text" id="pHandle" placeholder="Örn: @kullaniciadi">
+        </div>
+        <button onclick="addMember()">Veritabanına Ekle</button>
+
+        <div style="margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+            <label style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase;">Aktif Ekip</label>
+        </div>
+        <div class="member-list" id="teamList">
+            </div>
+    </aside>
+
+    <main>
+        <div class="header-title">
+            Operasyon <strong>Etkileşim Analizi</strong>
+        </div>
+
+        <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
+            <h3 style="color: var(--text-main);">Bot Verisini Buraya Bırak</h3>
+            <p>.txt formatındaki etkileşim dökümünü seçmek için tıklayın veya sürükleyin</p>
+            <input type="file" id="fileInput" hidden accept=".txt" onchange="processFile(this.files[0])">
+        </div>
+
+        <div class="table-container" id="resultContainer">
+            <table id="resultTable">
+                <thead>
+                    <tr>
+                        <th>Personel</th>
+                        <th>X (Twitter) ID</th>
+                        <th>Tarama Sonucu</th>
+                    </tr>
+                </thead>
+                <tbody id="resultBody">
+                </tbody>
+            </table>
+        </div>
+    </main>
 
     <script>
-        // --- 1. GİRİŞ İŞLEMLERİ ---
-        function login() {
-            const user = document.getElementById('username').value;
-            const pass = document.getElementById('password').value;
-            
-            // Demo amaçlı basit doğrulama
-            if(user === 'admin' && pass === '1234') {
-                document.getElementById('login-section').style.display = 'none';
-                document.getElementById('dashboard-section').style.display = 'block';
-                loadTeam(); // Giriş yapınca ekibi yükle
-            } else {
-                document.getElementById('login-error').style.display = 'block';
-            }
-        }
+        let team = JSON.parse(localStorage.getItem('nexusTeam')) || [];
 
-        function logout() {
-            document.getElementById('login-section').style.display = 'flex';
-            document.getElementById('dashboard-section').style.display = 'none';
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
-            document.getElementById('login-error').style.display = 'none';
+        function renderTeam() {
+            const list = document.getElementById('teamList');
+            list.innerHTML = team.map((member, index) => `
+                <div class="member-item">
+                    <div>
+                        <span class="member-name">${member.name}</span>
+                        <span class="member-handle">@${member.handle}</span>
+                    </div>
+                    <button class="btn-delete" onclick="removeMember(${index})">SİL</button>
+                </div>
+            `).join('');
+            localStorage.setItem('nexusTeam', JSON.stringify(team));
         }
-
-        // --- 2. EKİP YÖNETİMİ (Local Storage Kullanarak) ---
-        let team = JSON.parse(localStorage.getItem('socialTeam')) || [];
 
         function addMember() {
-            const name = document.getElementById('memberName').value.trim();
-            const handle = document.getElementById('memberHandle').value.trim();
-
-            if(!name || !handle) {
-                alert("Lütfen ad ve kullanıcı adı girin!");
-                return;
-            }
-
-            // '@' işareti yoksa ekle
-            const formattedHandle = handle.startsWith('@') ? handle : '@' + handle;
-
-            team.push({ id: Date.now(), name: name, handle: formattedHandle });
-            localStorage.setItem('socialTeam', JSON.stringify(team));
+            const name = document.getElementById('pName').value.trim();
+            const handle = document.getElementById('pHandle').value.replace('@', '').trim();
             
-            document.getElementById('memberName').value = '';
-            document.getElementById('memberHandle').value = '';
+            if (name && handle) {
+                team.push({ name, handle });
+                renderTeam();
+                document.getElementById('pName').value = '';
+                document.getElementById('pHandle').value = '';
+            }
+        }
+
+        function removeMember(index) {
+            team.splice(index, 1);
+            renderTeam();
+        }
+
+        // Drag & Drop İşlemleri
+        const dropzone = document.getElementById('dropzone');
+        
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('dragover');
+        });
+
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('dragover');
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('dragover');
+            if (e.dataTransfer.files.length) {
+                processFile(e.dataTransfer.files[0]);
+            }
+        });
+
+        function processFile(file) {
+            if (!file) return;
+            const reader = new FileReader();
             
-            loadTeam();
-        }
-
-        function deleteMember(id) {
-            team = team.filter(member => member.id !== id);
-            localStorage.setItem('socialTeam', JSON.stringify(team));
-            loadTeam();
-        }
-
-        function loadTeam() {
-            const tbody = document.getElementById('teamList');
-            tbody.innerHTML = '';
-            document.getElementById('teamCount').innerText = team.length;
-
-            team.forEach(member => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>
-                        <strong>${member.name}</strong><br>
-                        <span style="font-size: 0.8rem; color: gray;">${member.handle}</span>
-                    </td>
-                    <td><button class="delete-btn" onclick="deleteMember(${member.id})">Sil</button></td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        // --- 3. ETKİLEŞİM TAKİBİ SİMÜLASYONU ---
-        function checkInteractions() {
-            const url = document.getElementById('postUrl').value.trim();
-            if(!url) {
-                alert("Lütfen kontrol edilecek gönderinin URL'sini girin!");
-                return;
-            }
-            if(team.length === 0) {
-                alert("Ekibinizde hiç üye yok. Önce üye ekleyin!");
-                return;
-            }
-
-            // Arayüz güncellemeleri
-            document.getElementById('resultsCard').style.display = 'none';
-            document.getElementById('loading').style.display = 'block';
-
-            // Gerçekte burada fetch() ile backend sunucunuza (örn: Node.js) 
-            // URL ve üye listesi gönderilip X/Instagram API'lerinden yanıt beklenir.
-            // Biz burada sekreterin göreceği sonucu simüle etmek için 2 saniye bekletiyoruz.
-            setTimeout(() => {
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('resultsCard').style.display = 'block';
-                document.getElementById('scannedUrlText').innerHTML = `Taranan Bağlantı: <a href="${url}" target="_blank">${url}</a>`;
-                
-                const tbody = document.getElementById('interactionList');
+            reader.onload = function(e) {
+                const rawData = e.target.result.toLowerCase();
+                const tbody = document.getElementById('resultBody');
                 tbody.innerHTML = '';
 
-                // Her üye için (demo amaçlı) rastgele sonuçlar üretiyoruz
                 team.forEach(member => {
-                    const tr = document.createElement('tr');
-                    
-                    // Simülasyon: %80 ihtimalle yapmış olsun
-                    const liked = Math.random() > 0.2; 
-                    const commented = Math.random() > 0.5;
-                    const retweeted = Math.random() > 0.3;
+                    // Kullanıcı adını hem @ ile hem de yalın haliyle dosyada arıyoruz
+                    const searchTerm = member.handle.toLowerCase();
+                    const isInteracted = rawData.includes(searchTerm);
 
-                    tr.innerHTML = `
-                        <td>
-                            <strong>${member.name}</strong><br>
-                            <span style="font-size: 0.8rem; color: gray;">${member.handle}</span>
-                        </td>
-                        <td>${getBadge(liked)}</td>
-                        <td>${getBadge(commented)}</td>
-                        <td>${getBadge(retweeted)}</td>
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${member.name}</td>
+                            <td style="color: var(--text-muted)">@${member.handle}</td>
+                            <td>
+                                <span class="status ${isInteracted ? 'ok' : 'fail'}">
+                                    ${isInteracted ? 'ONAYLANDI' : 'GÖREV BEKLİYOR'}
+                                </span>
+                            </td>
+                        </tr>
                     `;
-                    tbody.appendChild(tr);
                 });
-            }, 2000); // 2 saniyelik sahte bekleme süresi
+
+                document.getElementById('resultContainer').style.display = 'block';
+            };
+            
+            reader.readAsText(file);
         }
 
-        function getBadge(status) {
-            if(status) return `<span class="status-badge status-yes">✓ Yapıldı</span>`;
-            return `<span class="status-badge status-no">✗ Bekliyor</span>`;
-        }
-
+        // Başlangıçta ekibi yükle
+        renderTeam();
     </script>
 </body>
 </html>
