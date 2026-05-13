@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sosyal Medya Ekip Takip Paneli</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --success: #10b981;
+            --danger: #ef4444;
+            --border: #e5e7eb;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* Giriş Ekranı */
+        #login-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .login-box {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-box h2 { margin-bottom: 1.5rem; color: var(--primary); }
+        .login-box input {
+            width: 100%; padding: 0.75rem; margin-bottom: 1rem;
+            border: 1px solid var(--border); border-radius: 6px;
+            font-size: 1rem;
+        }
+        
+        button {
+            width: 100%; padding: 0.75rem;
+            background-color: var(--primary); color: white;
+            border: none; border-radius: 6px; cursor: pointer;
+            font-size: 1rem; font-weight: 600; transition: 0.2s;
+        }
+        button:hover { background-color: var(--primary-hover); }
+
+        /* Dashboard Ekranı */
+        #dashboard-section {
+            display: none; /* Giriş yapana kadar gizli */
+            width: 100%; max-width: 1000px;
+            padding: 2rem;
+        }
+
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .grid-container {
+            display: grid; grid-template-columns: 1fr 2fr; gap: 1.5rem;
+        }
+        @media (max-width: 768px) {
+            .grid-container { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: var(--card-bg); padding: 1.5rem;
+            border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        .card h3 { margin-bottom: 1rem; font-size: 1.1rem; color: var(--text-main); }
+        
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-muted); }
+        .form-group input {
+            width: 100%; padding: 0.6rem; border: 1px solid var(--border);
+            border-radius: 6px; font-size: 0.95rem;
+        }
+
+        /* Tablo Tasarımı */
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background-color: #f9fafb; font-weight: 600; font-size: 0.9rem; color: var(--text-muted); }
+        td { font-size: 0.95rem; }
+        
+        .status-badge {
+            padding: 0.25rem 0.5rem; border-radius: 999px; font-size: 0.8rem; font-weight: 600;
+        }
+        .status-yes { background-color: #d1fae5; color: var(--success); }
+        .status-no { background-color: #fee2e2; color: var(--danger); }
+        .status-wait { background-color: #f3f4f6; color: var(--text-muted); }
+
+        .delete-btn {
+            background-color: transparent; color: var(--danger);
+            padding: 0.25rem; width: auto; font-size: 0.8rem;
+        }
+        .delete-btn:hover { background-color: #fee2e2; }
+        
+        #loading { display: none; text-align: center; color: var(--primary); margin-top: 1rem; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div id="login-section">
+        <div class="login-box">
+            <h2>Sekreter Girişi</h2>
+            <p style="margin-bottom: 1rem; font-size: 0.85rem; color: gray;">Test için: admin / 1234</p>
+            <input type="text" id="username" placeholder="Kullanıcı Adı">
+            <input type="password" id="password" placeholder="Şifre">
+            <button onclick="login()">Giriş Yap</button>
+            <p id="login-error" style="color: red; display: none; margin-top: 1rem; font-size: 0.9rem;">Hatalı giriş!</p>
+        </div>
+    </div>
+
+    <div id="dashboard-section">
+        <header>
+            <div>
+                <h1 style="color: var(--primary);">Etkileşim Takip Merkezi</h1>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Hoş geldin, Sekreter Yöneticisi</p>
+            </div>
+            <button onclick="logout()" style="width: auto; padding: 0.5rem 1rem; background-color: var(--text-muted);">Çıkış Yap</button>
+        </header>
+
+        <div class="grid-container">
+            <div>
+                <div class="card">
+                    <h3>👥 Yeni Birim Üyesi Ekle</h3>
+                    <div class="form-group">
+                        <label>Ad Soyad</label>
+                        <input type="text" id="memberName" placeholder="Örn: Ahmet Yılmaz">
+                    </div>
+                    <div class="form-group">
+                        <label>Sosyal Medya Kullanıcı Adı</label>
+                        <input type="text" id="memberHandle" placeholder="Örn: @ahmetyilmaz">
+                    </div>
+                    <button onclick="addMember()">Ekibe Ekle</button>
+                </div>
+
+                <div class="card">
+                    <h3>📋 Ekibim (<span id="teamCount">0</span> Kişi)</h3>
+                    <table id="teamTable">
+                        <thead>
+                            <tr>
+                                <th>Kullanıcı</th>
+                                <th>İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teamList">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div>
+                <div class="card">
+                    <h3>🚀 Gönderi Etkileşim Kontrolü</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+                        Takip etmek istediğiniz gönderinin URL'sini yapıştırın. Bot, ekibinizdeki üyelerin bu gönderiyle etkileşime girip girmediğini kontrol edecektir.
+                    </p>
+                    <div class="form-group">
+                        <label>Gönderi URL'si</label>
+                        <input type="text" id="postUrl" placeholder="https://twitter.com/hesap/status/123456789...">
+                    </div>
+                    <button onclick="checkInteractions()">Etkileşimleri Kontrol Et</button>
+                    <div id="loading">Bot API üzerinden verileri çekiyor, lütfen bekleyin...</div>
+                </div>
+
+                <div class="card" id="resultsCard" style="display: none;">
+                    <h3>📊 Kontrol Sonuçları</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;" id="scannedUrlText"></p>
+                    <table id="resultsTable">
+                        <thead>
+                            <tr>
+                                <th>Üye</th>
+                                <th>Beğeni</th>
+                                <th>Yorum</th>
+                                <th>Retweet (Paylaşım)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="interactionList">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. GİRİŞ İŞLEMLERİ ---
+        function login() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            
+            // Demo amaçlı basit doğrulama
+            if(user === 'admin' && pass === '1234') {
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('dashboard-section').style.display = 'block';
+                loadTeam(); // Giriş yapınca ekibi yükle
+            } else {
+                document.getElementById('login-error').style.display = 'block';
+            }
+        }
+
+        function logout() {
+            document.getElementById('login-section').style.display = 'flex';
+            document.getElementById('dashboard-section').style.display = 'none';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('login-error').style.display = 'none';
+        }
+
+        // --- 2. EKİP YÖNETİMİ (Local Storage Kullanarak) ---
+        let team = JSON.parse(localStorage.getItem('socialTeam')) || [];
+
+        function addMember() {
+            const name = document.getElementById('memberName').value.trim();
+            const handle = document.getElementById('memberHandle').value.trim();
+
+            if(!name || !handle) {
+                alert("Lütfen ad ve kullanıcı adı girin!");
+                return;
+            }
+
+            // '@' işareti yoksa ekle
+            const formattedHandle = handle.startsWith('@') ? handle : '@' + handle;
+
+            team.push({ id: Date.now(), name: name, handle: formattedHandle });
+            localStorage.setItem('socialTeam', JSON.stringify(team));
+            
+            document.getElementById('memberName').value = '';
+            document.getElementById('memberHandle').value = '';
+            
+            loadTeam();
+        }
+
+        function deleteMember(id) {
+            team = team.filter(member => member.id !== id);
+            localStorage.setItem('socialTeam', JSON.stringify(team));
+            loadTeam();
+        }
+
+        function loadTeam() {
+            const tbody = document.getElementById('teamList');
+            tbody.innerHTML = '';
+            document.getElementById('teamCount').innerText = team.length;
+
+            team.forEach(member => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>
+                        <strong>${member.name}</strong><br>
+                        <span style="font-size: 0.8rem; color: gray;">${member.handle}</span>
+                    </td>
+                    <td><button class="delete-btn" onclick="deleteMember(${member.id})">Sil</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // --- 3. ETKİLEŞİM TAKİBİ SİMÜLASYONU ---
+        function checkInteractions() {
+            const url = document.getElementById('postUrl').value.trim();
+            if(!url) {
+                alert("Lütfen kontrol edilecek gönderinin URL'sini girin!");
+                return;
+            }
+            if(team.length === 0) {
+                alert("Ekibinizde hiç üye yok. Önce üye ekleyin!");
+                return;
+            }
+
+            // Arayüz güncellemeleri
+            document.getElementById('resultsCard').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+
+            // Gerçekte burada fetch() ile backend sunucunuza (örn: Node.js) 
+            // URL ve üye listesi gönderilip X/Instagram API'lerinden yanıt beklenir.
+            // Biz burada sekreterin göreceği sonucu simüle etmek için 2 saniye bekletiyoruz.
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('resultsCard').style.display = 'block';
+                document.getElementById('scannedUrlText').innerHTML = `Taranan Bağlantı: <a href="${url}" target="_blank">${url}</a>`;
+                
+                const tbody = document.getElementById('interactionList');
+                tbody.innerHTML = '';
+
+                // Her üye için (demo amaçlı) rastgele sonuçlar üretiyoruz
+                team.forEach(member => {
+                    const tr = document.createElement('tr');
+                    
+                    // Simülasyon: %80 ihtimalle yapmış olsun
+                    const liked = Math.random() > 0.2; 
+                    const commented = Math.random() > 0.5;
+                    const retweeted = Math.random() > 0.3;
+
+                    tr.innerHTML = `
+                        <td>
+                            <strong>${member.name}</strong><br>
+                            <span style="font-size: 0.8rem; color: gray;">${member.handle}</span>
+                        </td>
+                        <td>${getBadge(liked)}</td>
+                        <td>${getBadge(commented)}</td>
+                        <td>${getBadge(retweeted)}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }, 2000); // 2 saniyelik sahte bekleme süresi
+        }
+
+        function getBadge(status) {
+            if(status) return `<span class="status-badge status-yes">✓ Yapıldı</span>`;
+            return `<span class="status-badge status-no">✗ Bekliyor</span>`;
+        }
+
+    </script>
+</body>
+</html>
