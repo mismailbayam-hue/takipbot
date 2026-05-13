@@ -5,218 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NEXUS | Operasyon Yönetim Paneli</title>
     <style>
-        :root {
-            --bg-dark: #0a0a0a;
-            --bg-panel: #141414;
-            --bg-hover: #1f1f1f;
-            --red-primary: #b91c1c;
-            --red-glow: rgba(185, 28, 28, 0.3);
-            --red-dark: #7f1d1d;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --border-color: #262626;
-            --success: #059669;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Sol Menü (Sidebar) */
-        aside {
-            width: 320px;
-            background-color: var(--bg-panel);
-            border-right: 1px solid var(--border-color);
-            padding: 2rem 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .brand {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
+        /* Tasarım kodları (Öncekiyle aynı Pro tasarım) */
+        :root { --bg-dark: #0a0a0a; --bg-panel: #141414; --bg-hover: #1f1f1f; --red-primary: #b91c1c; --red-glow: rgba(185, 28, 28, 0.3); --red-dark: #7f1d1d; --text-main: #f3f4f6; --text-muted: #9ca3af; --border-color: #262626; --success: #059669; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-main); display: flex; min-height: 100vh; }
+        aside { width: 320px; background-color: var(--bg-panel); border-right: 1px solid var(--border-color); padding: 2rem 1.5rem; display: flex; flex-direction: column; gap: 2rem; }
+        .brand { font-size: 1.5rem; font-weight: 800; letter-spacing: 2px; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
         .brand span { color: var(--red-primary); }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .form-group label {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        input {
-            background: var(--bg-dark);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 0.8rem;
-            border-radius: 6px;
-            outline: none;
-            transition: all 0.3s;
-        }
-
-        input:focus {
-            border-color: var(--red-primary);
-            box-shadow: 0 0 8px var(--red-glow);
-        }
-
-        button {
-            background: linear-gradient(135deg, var(--red-primary), var(--red-dark));
-            color: white;
-            border: none;
-            padding: 0.8rem;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.9rem;
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px var(--red-glow);
-        }
-
-        .member-list {
-            flex-grow: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .member-item {
-            background: var(--bg-dark);
-            padding: 0.8rem;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .member-item div {
-            display: flex;
-            flex-direction: column;
-        }
-        
+        .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+        .form-group label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        input { background: var(--bg-dark); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.8rem; border-radius: 6px; outline: none; transition: all 0.3s; }
+        input:focus { border-color: var(--red-primary); box-shadow: 0 0 8px var(--red-glow); }
+        button { background: linear-gradient(135deg, var(--red-primary), var(--red-dark)); color: white; border: none; padding: 0.8rem; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px var(--red-glow); }
+        .btn-sync { background: linear-gradient(135deg, #059669, #047857); margin-bottom: 1.5rem; font-size: 1.1rem; padding: 1rem; }
+        .btn-sync:hover { box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3); }
+        .member-list { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem; }
+        .member-item { background: var(--bg-dark); padding: 0.8rem; border-radius: 6px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
         .member-name { font-weight: 600; font-size: 0.9rem; }
         .member-handle { font-size: 0.8rem; color: var(--text-muted); }
-
-        .btn-delete {
-            background: transparent;
-            color: var(--text-muted);
-            padding: 0.3rem;
-            font-size: 0.8rem;
-            box-shadow: none;
-        }
+        .btn-delete { background: transparent; color: var(--text-muted); padding: 0.3rem; font-size: 0.8rem; box-shadow: none; }
         .btn-delete:hover { background: var(--bg-panel); color: var(--red-primary); transform: none; box-shadow: none;}
-
-        /* Ana İçerik (Main) */
-        main {
-            flex-grow: 1;
-            padding: 3rem;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .header-title {
-            font-size: 2rem;
-            font-weight: 300;
-            color: var(--text-muted);
-        }
-
+        main { flex-grow: 1; padding: 3rem; display: flex; flex-direction: column; gap: 2rem; }
+        .header-title { font-size: 2rem; font-weight: 300; color: var(--text-muted); }
         .header-title strong { color: var(--text-main); font-weight: 600; }
-
-        .dropzone {
-            border: 2px dashed var(--border-color);
-            background: var(--bg-panel);
-            border-radius: 12px;
-            padding: 4rem 2rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .dropzone:hover, .dropzone.dragover {
-            border-color: var(--red-primary);
-            background: rgba(185, 28, 28, 0.05);
-        }
-
-        .dropzone h3 { margin-bottom: 0.5rem; font-weight: 500; }
-        .dropzone p { color: var(--text-muted); font-size: 0.9rem; }
-
-        /* Tablo */
-        .table-container {
-            background: var(--bg-panel);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            overflow: hidden;
-            display: none;
-        }
-
+        .table-container { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; display: none; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
-        th { 
-            background: rgba(0,0,0,0.2); 
-            padding: 1rem; 
-            font-size: 0.85rem; 
-            text-transform: uppercase; 
-            color: var(--text-muted); 
-            border-bottom: 2px solid var(--border-color);
-        }
+        th { background: rgba(0,0,0,0.2); padding: 1rem; font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); border-bottom: 2px solid var(--border-color); }
         td { padding: 1rem; border-bottom: 1px solid var(--border-color); font-size: 0.95rem; }
         tr:hover td { background: var(--bg-hover); }
-
-        .status {
-            display: inline-block;
-            padding: 0.3rem 0.8rem;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-        }
+        .status { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; }
         .status.ok { background: rgba(5, 150, 105, 0.1); color: var(--success); border: 1px solid var(--success); }
         .status.fail { background: rgba(185, 28, 28, 0.1); color: var(--red-primary); border: 1px solid var(--red-primary); }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg-dark); }
-        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
     </style>
 </head>
 <body>
 
     <aside>
-        <div class="brand">
-            NEXUS<span>.</span>PANEL
-        </div>
+        <div class="brand">NEXUS<span>.</span>PANEL</div>
 
         <div class="form-group" style="margin-top: 1rem;">
             <label>Yeni Personel Adı</label>
@@ -231,20 +57,13 @@
         <div style="margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
             <label style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase;">Aktif Ekip</label>
         </div>
-        <div class="member-list" id="teamList">
-            </div>
+        <div class="member-list" id="teamList"></div>
     </aside>
 
     <main>
-        <div class="header-title">
-            Operasyon <strong>Etkileşim Analizi</strong>
-        </div>
+        <div class="header-title">Operasyon <strong>Etkileşim Analizi</strong></div>
 
-        <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
-            <h3 style="color: var(--text-main);">Bot Verisini Buraya Bırak</h3>
-            <p>.txt formatındaki etkileşim dökümünü seçmek için tıklayın veya sürükleyin</p>
-            <input type="file" id="fileInput" hidden accept=".txt" onchange="processFile(this.files[0])">
-        </div>
+        <button class="btn-sync" id="syncBtn" onclick="syncData()">🔄 UYDU VERİSİNİ ÇEK VE ANALİZ ET</button>
 
         <div class="table-container" id="resultContainer">
             <table id="resultTable">
@@ -255,8 +74,7 @@
                         <th>Tarama Sonucu</th>
                     </tr>
                 </thead>
-                <tbody id="resultBody">
-                </tbody>
+                <tbody id="resultBody"></tbody>
             </table>
         </div>
     </main>
@@ -281,7 +99,6 @@
         function addMember() {
             const name = document.getElementById('pName').value.trim();
             const handle = document.getElementById('pHandle').value.replace('@', '').trim();
-            
             if (name && handle) {
                 team.push({ name, handle });
                 renderTeam();
@@ -290,42 +107,31 @@
             }
         }
 
-        function removeMember(index) {
-            team.splice(index, 1);
-            renderTeam();
-        }
+        function removeMember(index) { team.splice(index, 1); renderTeam(); }
 
-        // Drag & Drop İşlemleri
-        const dropzone = document.getElementById('dropzone');
+        // --- GOOGLE SHEETS OTOMASYON BAĞLANTISI ---
+        // DİKKAT: KENDİ SHEET ID'Nİ BURAYA YAZ! (Tırnak işaretlerini silme)
+        const sheetID = "SENIN_SHEET_ID_BURAYA"; 
         
-        dropzone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropzone.classList.add('dragover');
-        });
+        async function syncData() {
+            const btn = document.getElementById('syncBtn');
+            btn.innerHTML = "⏳ Veri Bekleniyor...";
+            btn.style.opacity = "0.7";
 
-        dropzone.addEventListener('dragleave', () => {
-            dropzone.classList.remove('dragover');
-        });
+            // --- GOOGLE SHEETS OTOMASYON BAĞLANTISI ---
+            const sheetID = "1zq-6UTrlMLgdXlalLDvS32gc-Ly2gf9sPxg5QUo3DeA";
 
-        dropzone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropzone.classList.remove('dragover');
-            if (e.dataTransfer.files.length) {
-                processFile(e.dataTransfer.files[0]);
-            }
-        });
-
-        function processFile(file) {
-            if (!file) return;
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                const rawData = e.target.result.toLowerCase();
+            try {
+                const response = await fetch(sheetURL);
+                if (!response.ok) throw new Error("Ağa bağlanılamadı.");
+                
+                const csvData = await response.text();
+                const rawData = csvData.toLowerCase();
+                
                 const tbody = document.getElementById('resultBody');
                 tbody.innerHTML = '';
 
                 team.forEach(member => {
-                    // Kullanıcı adını hem @ ile hem de yalın haliyle dosyada arıyoruz
                     const searchTerm = member.handle.toLowerCase();
                     const isInteracted = rawData.includes(searchTerm);
 
@@ -343,12 +149,16 @@
                 });
 
                 document.getElementById('resultContainer').style.display = 'block';
-            };
-            
-            reader.readAsText(file);
+                btn.innerHTML = "✅ ANALİZ TAMAMLANDI (Tekrar Çek)";
+                btn.style.opacity = "1";
+
+            } catch (error) {
+                alert("Veri çekilemedi! Lütfen Google Sheet linkinizin 'Herkese Açık' olduğundan ve ID'yi doğru girdiğinizden emin olun.");
+                btn.innerHTML = "🔄 UYDU VERİSİNİ ÇEK VE ANALİZ ET";
+                btn.style.opacity = "1";
+            }
         }
 
-        // Başlangıçta ekibi yükle
         renderTeam();
     </script>
 </body>
